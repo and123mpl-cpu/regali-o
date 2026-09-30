@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tengo algo para ti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tengo algo para ti 💙</title>
 
   <style>
     :root {
@@ -12,6 +13,7 @@
       --paper: #ffffff;
       --ink: #24506b;
       --accent: #ffd45c;
+      --accent-dark: #e6b82f;
     }
 
     * {
@@ -20,227 +22,299 @@
 
     html,
     body {
-      min-height: 100%;
       margin: 0;
+      min-height: 100%;
     }
 
     body {
-      min-height: 100vh;
-      font-family: "Trebuchet MS", "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #ffffff 0%, transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+
       color: var(--ink);
-      background: linear-gradient(160deg, var(--bg-1), var(--bg-2)) fixed;
+
+      min-height: 100vh;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       padding: 24px;
+
       overflow-x: hidden;
     }
 
-    .screen {
-      width: 100%;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 20px;
+    button {
+      font-family: inherit;
     }
 
-    .screen[hidden] {
-      display: none;
+    .screen {
+      width: min(560px, 100%);
+
+      background: rgba(255, 255, 255, 0.92);
+
+      border-radius: 28px;
+
+      padding: 28px;
+
+      text-align: center;
+
+      box-shadow:
+        0 20px 50px rgba(36, 80, 107, 0.18),
+        0 5px 15px rgba(36, 80, 107, 0.08);
+
+      animation: appear 0.6s ease;
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(1.6rem, 6vw, 2.4rem);
-      line-height: 1.15;
+      margin: 0 0 20px;
+
+      font-size: clamp(2rem, 7vw, 3.2rem);
+
+      line-height: 1.05;
+
+      color: var(--ink);
     }
 
+    .main-image,
+    #teaser-image,
     .gift-image {
-      width: min(100%, 420px);
-      height: auto;
+      display: block;
+
+      width: min(100%, 430px);
+
+      max-height: 460px;
+
+      object-fit: cover;
+
+      margin: 0 auto;
+
       border-radius: 22px;
-      border: 4px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
-      background: rgba(255, 255, 255, 0.1);
+
+      border: 7px solid white;
+
+      box-shadow:
+        0 15px 30px rgba(36, 80, 107, 0.18);
+
+      background: white;
     }
 
-    .gift-image.bump {
-      animation: bump 0.4s ease;
-    }
-
-    @keyframes bump {
-      0% {
-        transform: rotate(0) scale(1);
-      }
-
-      35% {
-        transform: rotate(-3deg) scale(1.04);
-      }
-
-      70% {
-        transform: rotate(3deg) scale(1.04);
-      }
-
-      100% {
-        transform: rotate(0) scale(1);
-      }
+    #teaser-image.bump {
+      animation: bump 0.45s ease;
     }
 
     .bubble {
-      min-height: 3.4em;
-      margin: 0;
-      padding: 12px 20px;
-      max-width: 100%;
-      background: var(--paper);
-      color: var(--ink);
-      border-radius: 18px;
-      font-size: clamp(1.05rem, 3.6vw, 1.3rem);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+      margin: 20px auto 12px;
 
-    .bubble[hidden] {
-      display: none;
+      max-width: 480px;
+
+      background: #f4fbff;
+
+      border: 2px solid #c9ebfa;
+
+      border-radius: 18px;
+
+      padding: 15px 18px;
+
+      font-size: 1.15rem;
+
+      font-weight: 700;
+
+      color: var(--ink);
+
+      box-shadow: 0 8px 18px rgba(36, 80, 107, 0.08);
     }
 
     .buttons {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
+
       justify-content: center;
-      gap: 16px;
+
+      align-items: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+
+      margin-top: 25px;
     }
 
     .btn {
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
+      border: 0;
+
       border-radius: 999px;
-      border: 2px solid transparent;
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
-    }
 
-    .btn:focus-visible {
-      outline: 3px solid #ffffff;
-      outline-offset: 3px;
-    }
+      padding: 14px 26px;
 
-    /* BOTÓN SÍ */
-    .btn-yes {
       font-size: 1.2rem;
-      padding: 0.6em 1.8em;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        font-size 0.25s ease;
+
+      min-width: 110px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-yes {
       background: var(--accent);
-      color: var(--ink);
-      box-shadow: 0 6px 0 #d2a91f;
+
+      color: #5c4700;
+
+      box-shadow:
+        0 8px 18px rgba(230, 184, 47, 0.28);
     }
 
     .btn-yes:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 9px 0 #d2a91f;
+      background: #ffdc73;
     }
 
-    .btn-yes:active {
-      transform: translateY(2px);
-      box-shadow: 0 3px 0 #d2a91f;
-    }
-
-    /* BOTÓN NO */
     .btn-no {
-      font-size: 1.1rem;
-      padding: 0.6em 1.6em;
-      background: transparent;
+      background: #e8f6fc;
+
       color: var(--ink);
-      border-color: var(--ink);
+
+      border: 2px solid #b8dfef;
+
+      box-shadow:
+        0 8px 18px rgba(36, 80, 107, 0.12);
     }
 
-    .btn-no:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
+    .music-toggle {
+      position: fixed;
 
-    .btn[hidden] {
-      display: none;
-    }
+      top: 18px;
+      right: 18px;
 
-    /* TEXTO FINAL */
-    .final-text {
-      margin: 0;
-      font-size: clamp(2.4rem, 10vw, 4.8rem);
-      font-weight: 800;
-      animation: pulse 0.9s ease-in-out infinite alternate;
-    }
+      z-index: 1000;
 
-    @keyframes pulse {
-      from {
-        transform: scale(1);
-      }
+      width: 48px;
+      height: 48px;
 
-      to {
-        transform: scale(1.1);
-      }
+      border-radius: 50%;
+
+      border: 2px solid rgba(36, 80, 107, 0.15);
+
+      background: rgba(255, 255, 255, 0.9);
+
+      color: var(--ink);
+
+      font-size: 1.1rem;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 20px rgba(36, 80, 107, 0.15);
     }
 
     .reveal {
-      animation: pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1);
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 22px;
     }
 
-    @keyframes pop {
+    .final-text {
+      margin: 0;
+
+      font-size: clamp(2.4rem, 10vw, 4.8rem);
+
+      line-height: 0.95;
+
+      font-weight: 1000;
+
+      color: var(--ink);
+
+      text-transform: uppercase;
+
+      text-shadow:
+        3px 3px 0 white,
+        6px 6px 0 rgba(36, 80, 107, 0.12);
+    }
+
+    .confetti {
+      position: fixed;
+
+      top: -40px;
+
+      z-index: 2000;
+
+      pointer-events: none;
+
+      font-size: 25px;
+
+      animation: fall linear forwards;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @keyframes appear {
       from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: translateY(15px) scale(0.98);
       }
 
       to {
         opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes bump {
+      0% {
+        transform: scale(0.95);
+      }
+
+      60% {
+        transform: scale(1.03);
+      }
+
+      100% {
         transform: scale(1);
       }
     }
 
-    /* CONFETI */
-    .confetti {
-      position: fixed;
-      top: -40px;
-      font-size: 1.6rem;
-      pointer-events: none;
-      z-index: 5;
-      animation: fall linear forwards;
-    }
-
     @keyframes fall {
+      from {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+
       to {
-        transform: translateY(110vh) rotate(540deg);
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
       }
     }
 
-    /* BOTÓN DE MÚSICA */
-    #music-toggle {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 10;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-      background: rgba(255, 255, 255, 0.65);
-      color: var(--ink);
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
 
-    #music-toggle[hidden] {
-      display: none;
-    }
+      .screen {
+        padding: 20px;
+        border-radius: 22px;
+      }
 
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
+      .btn {
+        min-width: 105px;
+        padding: 12px 22px;
       }
     }
   </style>
@@ -248,12 +322,21 @@
 
 <body>
 
-  <!-- ================= MÚSICA ================= -->
+  <!-- =====================================================
+       MÚSICA
+       ===================================================== -->
 
-  <audio id="bg-music" loop preload="auto"></audio>
+  <audio
+    id="bg-music"
+    src="pretty-boy.mp3"
+    autoplay
+    loop
+    preload="auto">
+  </audio>
 
   <button
     id="music-toggle"
+    class="music-toggle"
     type="button"
     aria-label="Activar música"
     title="Música"
@@ -262,26 +345,30 @@
   </button>
 
 
-  <!-- ================= PANTALLA PRINCIPAL ================= -->
+  <!-- =====================================================
+       PANTALLA PRINCIPAL
+       ===================================================== -->
 
-  <div class="screen" id="teaser-screen">
+  <main
+    class="screen"
+    id="teaser-screen">
 
-    <h1>¿Aceptas mi regalo?</h1>
+    <h1>
+      ¿Aceptas mi regalo?
+    </h1>
 
-    <!-- PRIMERA IMAGEN -->
+    <!-- IMAGEN INICIAL -->
 
     <img
-      class="gift-image"
       id="teaser-image"
       src="https://i.pinimg.com/736x/e5/ce/76/e5ce76de98fc7d024c2a2b6d10bb2c25.jpg"
-      alt="Imagen misteriosa que anticipa el regalo">
+      alt="Tengo un regalo para ti">
 
-    <!-- MENSAJES -->
+    <!-- MENSAJE -->
 
     <p
       class="bubble"
       id="bubble"
-      aria-live="polite"
       hidden>
     </p>
 
@@ -290,27 +377,29 @@
     <div class="buttons">
 
       <button
-        type="button"
         class="btn btn-yes"
-        id="btn-yes">
+        id="btn-yes"
+        type="button">
         Sí
       </button>
 
       <button
-        type="button"
         class="btn btn-no"
-        id="btn-no">
+        id="btn-no"
+        type="button">
         No
       </button>
 
     </div>
 
-  </div>
+  </main>
 
 
-  <!-- ================= PANTALLA FINAL ================= -->
+  <!-- =====================================================
+       PANTALLA FINAL
+       ===================================================== -->
 
-  <div
+  <main
     class="screen reveal"
     id="reveal-screen"
     hidden>
@@ -318,18 +407,18 @@
     <img
       class="gift-image"
       src="https://i.pinimg.com/736x/6f/de/64/6fde641b3ceeda2ac48b54a4c72a8979.jpg"
-      alt="Tu regalo: Hot Wheels"
-      width="600"
-      height="400">
+      alt="Tu regalo Hot Wheels">
 
     <p class="final-text">
       TOMA TUS HOTTTTWEELS
     </p>
 
-  </div>
+  </main>
 
 
-  <!-- ================= JAVASCRIPT ================= -->
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
 
   <script>
 
@@ -338,30 +427,179 @@
       'use strict';
 
 
-      /* =========================================
-         CONFIGURACIÓN
-      ========================================= */
-
-      /*
-        La música debe estar en la misma carpeta
-        que este archivo HTML.
-
-        Nombre del archivo:
-
-        pretty-boy.mp3
-      */
+      /* =====================================================
+         CONFIGURACIÓN DE MÚSICA
+         ===================================================== */
 
       const MUSIC_URL = 'pretty-boy.mp3';
 
+      const music = document.getElementById('bg-music');
+
+      const musicToggle =
+        document.getElementById('music-toggle');
+
+      let playing = false;
+
+
+      function setMusicState(on) {
+
+        playing = on;
+
+        musicToggle.textContent =
+          on ? '❚❚' : '▶';
+
+        musicToggle.setAttribute(
+          'aria-label',
+          on
+            ? 'Pausar música'
+            : 'Activar música'
+        );
+
+      }
+
+
+      function startMusic() {
+
+        music.volume = 1;
+
+        music.play()
+          .then(() => {
+
+            setMusicState(true);
+
+          })
+          .catch(() => {
+
+            /*
+              Algunos navegadores bloquean
+              el autoplay con sonido.
+
+              En ese caso la música comenzará
+              cuando la persona haga clic.
+            */
+
+          });
+
+      }
+
 
       /*
-        Cada vez que se presiona "NO",
-        aparece una nueva imagen y un nuevo mensaje.
+        Intentar reproducir la música
+        inmediatamente al abrir la página.
       */
 
-      const steps = [
+      window.addEventListener(
+        'load',
+        () => {
 
-        /* 2DA IMAGEN */
+          startMusic();
+
+          setTimeout(
+            startMusic,
+            500
+          );
+
+        }
+      );
+
+
+      /*
+        Si el navegador bloquea el autoplay,
+        cualquier primer clic inicia la música.
+      */
+
+      document.addEventListener(
+        'pointerdown',
+        () => {
+
+          if (!playing) {
+
+            startMusic();
+
+          }
+
+        }
+      );
+
+
+      /*
+        Botón de música
+      */
+
+      musicToggle.addEventListener(
+        'click',
+        (event) => {
+
+          event.stopPropagation();
+
+          if (playing) {
+
+            music.pause();
+
+            setMusicState(false);
+
+          } else {
+
+            startMusic();
+
+          }
+
+        }
+      );
+
+
+      /*
+        Mostrar botón de música
+      */
+
+      musicToggle.hidden = false;
+
+
+      /* =====================================================
+         PANTALLAS
+         ===================================================== */
+
+      const teaserScreen =
+        document.getElementById(
+          'teaser-screen'
+        );
+
+      const revealScreen =
+        document.getElementById(
+          'reveal-screen'
+        );
+
+
+      /* =====================================================
+         ELEMENTOS
+         ===================================================== */
+
+      const teaserImage =
+        document.getElementById(
+          'teaser-image'
+        );
+
+      const bubble =
+        document.getElementById(
+          'bubble'
+        );
+
+      const yesButton =
+        document.getElementById(
+          'btn-yes'
+        );
+
+      const noButton =
+        document.getElementById(
+          'btn-no'
+        );
+
+
+      /* =====================================================
+         IMÁGENES Y MENSAJES
+         ===================================================== */
+
+      const steps = [
 
         {
           text: 'apura di que si',
@@ -372,10 +610,8 @@
           alt: 'Apura di que sí'
         },
 
-
-        /* 3RA IMAGEN */
-
         {
+
           text: 'no me caes, sapo',
 
           img:
@@ -384,222 +620,218 @@
           alt: 'No me caes, sapo'
         },
 
-
-        /* 4TA IMAGEN */
-
         {
-          text: 'es bromi, pero me salió bonito si o no?',
+
+          text:
+            'es bromi, pero me salió bonito si o no?',
 
           img:
             'https://i.pinimg.com/736x/d3/fd/fe/d3fdfece68689c7133dc708b34de2547.jpg',
 
-          alt: 'Es bromi, pero me salió bonito si o no'
+          alt:
+            'Es bromi, pero me salió bonito si o no'
         },
 
-
-        /* 5TA IMAGEN */
-
         {
-          text: 'ji, esta cute poner imagenes de gatos, pero sigue dandole no xd',
+
+          text:
+            'ji, esta cute poner imagenes de gatos, peor sigue dandole no xd',
 
           img:
             'https://i.pinimg.com/736x/87/97/8c/87978ce7f14835b20c2db3aed9536d0a.jpg',
 
-          alt: 'Gato cute'
+          alt:
+            'Gato cute'
         },
 
-
-        /* 6TA IMAGEN */
-
         {
-          text: 'xd, cuteee',
+
+          text:
+            'xd, cuteee',
 
           img:
             'https://i.pinimg.com/736x/70/74/26/707426d8d92d6e85da4becb35f921098.jpg',
 
-          alt: 'Gato cute'
+          alt:
+            'Gato cute'
         },
 
-
-        /* 7MA IMAGEN - GIF */
-
         {
-          text: 'pude poner un giiif, beshito. ahora si',
+
+          text:
+            'pude poner un giiif, beshito. ahora si',
 
           img:
             'cat-kiss-kiss-cat.gif',
 
-          alt: 'GIF de gatitos dándose un besito'
+          alt:
+            'GIF de gatitos dándose un besito'
         },
 
-
-        /* 8VA IMAGEN */
-
         {
-          text: 'oño',
+
+          text:
+            'oño',
 
           img:
             'https://i.pinimg.com/736x/79/1b/3a/791b3a33b2ce3320ca1817310ad9ae58.jpg',
 
-          alt: 'Oño'
+          alt:
+            'Oño'
         },
 
-
-        /* ÚLTIMA IMAGEN ANTES DE DECIR SÍ */
-
         {
-          text: 'AHORA SIII',
+
+          text:
+            'AHORA SIII',
 
           img:
             'https://i.pinimg.com/1200x/89/aa/84/89aa84eb63e910169c6443bd15c3724b.jpg',
 
-          alt: 'Ahora sí'
+          alt:
+            'Ahora sí'
         }
 
       ];
 
 
-      /* =========================================
-         ELEMENTOS HTML
-      ========================================= */
-
-      const teaserScreen =
-        document.getElementById('teaser-screen');
-
-      const revealScreen =
-        document.getElementById('reveal-screen');
-
-      const teaserImage =
-        document.getElementById('teaser-image');
-
-      const bubble =
-        document.getElementById('bubble');
-
-      const yesButton =
-        document.getElementById('btn-yes');
-
-      const noButton =
-        document.getElementById('btn-no');
-
-      const music =
-        document.getElementById('bg-music');
-
-      const musicToggle =
-        document.getElementById('music-toggle');
-
+      /* =====================================================
+         CONTADOR
+         ===================================================== */
 
       let noClicks = 0;
 
 
-      /* =========================================
+      /* =====================================================
          BOTÓN NO
-      ========================================= */
+         ===================================================== */
 
-      noButton.addEventListener('click', () => {
+      noButton.addEventListener(
+        'click',
+        () => {
 
-        const step = steps[noClicks];
+          /*
+            Tomamos la imagen y mensaje
+            correspondiente al siguiente No.
+          */
 
-        noClicks += 1;
-
-
-        /*
-          Mostrar mensaje
-        */
-
-        bubble.hidden = false;
-
-        bubble.textContent = step.text;
+          const step =
+            steps[noClicks];
 
 
-        /*
-          Cambiar imagen
-        */
-
-        teaserImage.src = step.img;
-
-        teaserImage.alt = step.alt;
+          noClicks++;
 
 
-        /*
-          Reiniciar animación de la imagen
-        */
+          /*
+            Mostrar mensaje
+          */
 
-        teaserImage.classList.remove('bump');
+          bubble.hidden = false;
 
-        void teaserImage.offsetWidth;
-
-        teaserImage.classList.add('bump');
-
-
-        /*
-          El botón Sí crece
-        */
-
-        yesButton.style.fontSize =
-          (1.2 + noClicks * 0.35) + 'rem';
+          bubble.textContent =
+            step.text;
 
 
-        /*
-          El botón No se hace pequeño
-        */
+          /*
+            Cambiar imagen
+          */
 
-        noButton.style.transform =
-          'scale(' +
-          Math.max(0.6, 1 - noClicks * 0.08) +
-          ')';
+          teaserImage.src =
+            step.img;
+
+          teaserImage.alt =
+            step.alt;
 
 
-        /*
-          Cuando llegamos a la última imagen:
+          /*
+            Animación de imagen
+          */
 
-          - desaparece NO
-          - queda solamente SÍ
-          - aparece "AHORA SIII"
-        */
+          teaserImage.classList.remove(
+            'bump'
+          );
 
-        if (noClicks >= steps.length) {
+          void teaserImage.offsetWidth;
 
-          noButton.hidden = true;
+          teaserImage.classList.add(
+            'bump'
+          );
 
-          yesButton.focus();
+
+          /*
+            Hacer crecer el botón Sí
+          */
+
+          yesButton.style.fontSize =
+            (
+              1.2 +
+              noClicks * 0.35
+            ) +
+            'rem';
+
+
+          /*
+            Hacer pequeño el botón No
+          */
+
+          noButton.style.transform =
+            'scale(' +
+            Math.max(
+              0.6,
+              1 - noClicks * 0.08
+            ) +
+            ')';
+
+
+          /*
+            Después del último No,
+            ocultar completamente el botón No.
+          */
+
+          if (
+            noClicks >= steps.length
+          ) {
+
+            noButton.hidden = true;
+
+            yesButton.focus();
+
+          }
 
         }
+      );
 
-      });
 
-
-      /* =========================================
+      /* =====================================================
          BOTÓN SÍ
-      ========================================= */
+         ===================================================== */
 
-      yesButton.addEventListener('click', () => {
+      yesButton.addEventListener(
+        'click',
+        () => {
 
-        /*
-          Ocultar pantalla de preguntas
-        */
+          /*
+            Mostrar solamente el regalo final
+          */
 
-        teaserScreen.hidden = true;
+          teaserScreen.hidden = true;
 
-
-        /*
-          Mostrar regalo final
-        */
-
-        revealScreen.hidden = false;
+          revealScreen.hidden = false;
 
 
-        /*
-          Lanzar confeti
-        */
+          /*
+            Lanzar confeti
+          */
 
-        launchConfetti();
+          launchConfetti();
 
-      });
+        }
+      );
 
 
-      /* =========================================
+      /* =====================================================
          CONFETI
-      ========================================= */
+         ===================================================== */
 
       function launchConfetti() {
 
@@ -612,140 +844,61 @@
         ];
 
 
-        for (let i = 0; i < 40; i++) {
+        for (
+          let i = 0;
+          i < 40;
+          i++
+        ) {
 
           const el =
-            document.createElement('span');
+            document.createElement(
+              'span'
+            );
 
-          el.className = 'confetti';
+
+          el.className =
+            'confetti';
+
 
           el.textContent =
-            pieces[i % pieces.length];
+            pieces[
+              i % pieces.length
+            ];
 
 
           el.style.left =
-            Math.random() * 100 + 'vw';
+            Math.random() * 100 +
+            'vw';
 
 
           el.style.animationDuration =
-            (2.5 + Math.random() * 2.5) + 's';
+            (
+              2.5 +
+              Math.random() * 2.5
+            ) +
+            's';
 
 
           el.style.animationDelay =
-            Math.random() * 1.2 + 's';
+            Math.random() * 1.2 +
+            's';
 
 
-          document.body.appendChild(el);
+          document.body.appendChild(
+            el
+          );
 
 
           el.addEventListener(
             'animationend',
-            () => el.remove()
+            () => {
+
+              el.remove();
+
+            }
           );
 
         }
-
-      }
-
-
-      /* =========================================
-         MÚSICA
-      ========================================= */
-
-      if (MUSIC_URL) {
-
-        music.src = MUSIC_URL;
-
-        musicToggle.hidden = false;
-
-        let playing = false;
-
-
-        function setState(on) {
-
-          playing = on;
-
-          musicToggle.textContent =
-            on ? '❚❚' : '▶';
-
-          musicToggle.setAttribute(
-            'aria-label',
-            on
-              ? 'Pausar música'
-              : 'Activar música'
-          );
-
-        }
-
-
-        function start() {
-
-          music
-            .play()
-            .then(() => {
-
-              setState(true);
-
-            })
-            .catch(() => {
-
-              /*
-                El navegador puede bloquear
-                la reproducción automática.
-                Se iniciará cuando el usuario
-                haga clic.
-              */
-
-            });
-
-        }
-
-
-        /*
-          La música empieza cuando el usuario
-          hace su primera interacción.
-        */
-
-        document.addEventListener(
-          'pointerdown',
-          (e) => {
-
-            if (
-              !playing &&
-              !musicToggle.contains(e.target)
-            ) {
-
-              start();
-
-            }
-
-          },
-          { once: true }
-        );
-
-
-        /*
-          Botón de música
-        */
-
-        musicToggle.addEventListener(
-          'click',
-          () => {
-
-            if (playing) {
-
-              music.pause();
-
-              setState(false);
-
-            } else {
-
-              start();
-
-            }
-
-          }
-        );
 
       }
 
