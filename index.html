@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tengo algo para ti</title>
+
+  <style>
+    :root {
+      --bg-1: #dff6ff;
+      --bg-2: #bfe9ff;
+      --paper: #ffffff;
+      --ink: #24506b;
+      --accent: #ffd45c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(160deg, var(--bg-1), var(--bg-2)) fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .screen[hidden] {
+      display: none;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 6vw, 2.4rem);
+      line-height: 1.15;
+    }
+
+    .gift-image {
+      width: min(100%, 420px);
+      height: auto;
+      border-radius: 22px;
+      border: 4px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .gift-image.bump {
+      animation: bump 0.4s ease;
+    }
+
+    @keyframes bump {
+      0% {
+        transform: rotate(0) scale(1);
+      }
+
+      35% {
+        transform: rotate(-3deg) scale(1.04);
+      }
+
+      70% {
+        transform: rotate(3deg) scale(1.04);
+      }
+
+      100% {
+        transform: rotate(0) scale(1);
+      }
+    }
+
+    .bubble {
+      min-height: 3.4em;
+      margin: 0;
+      padding: 12px 20px;
+      max-width: 100%;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 18px;
+      font-size: clamp(1.05rem, 3.6vw, 1.3rem);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bubble[hidden] {
+      display: none;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .btn {
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 3px;
+    }
+
+    /* BOTÓN SÍ */
+    .btn-yes {
+      font-size: 1.2rem;
+      padding: 0.6em 1.8em;
+      background: var(--accent);
+      color: var(--ink);
+      box-shadow: 0 6px 0 #d2a91f;
+    }
+
+    .btn-yes:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #d2a91f;
+    }
+
+    .btn-yes:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 #d2a91f;
+    }
+
+    /* BOTÓN NO */
+    .btn-no {
+      font-size: 1.1rem;
+      padding: 0.6em 1.6em;
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .btn-no:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn[hidden] {
+      display: none;
+    }
+
+    /* TEXTO FINAL */
+    .final-text {
+      margin: 0;
+      font-size: clamp(2.4rem, 10vw, 4.8rem);
+      font-weight: 800;
+      animation: pulse 0.9s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        transform: scale(1);
+      }
+
+      to {
+        transform: scale(1.1);
+      }
+    }
+
+    .reveal {
+      animation: pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1);
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* CONFETI */
+    .confetti {
+      position: fixed;
+      top: -40px;
+      font-size: 1.6rem;
+      pointer-events: none;
+      z-index: 5;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+      }
+    }
+
+    /* BOTÓN DE MÚSICA */
+    #music-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: rgba(255, 255, 255, 0.65);
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    #music-toggle[hidden] {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= MÚSICA ================= -->
+
+  <audio id="bg-music" loop preload="auto"></audio>
+
+  <button
+    id="music-toggle"
+    type="button"
+    aria-label="Activar música"
+    title="Música"
+    hidden>
+    ▶
+  </button>
+
+
+  <!-- ================= PANTALLA PRINCIPAL ================= -->
+
+  <div class="screen" id="teaser-screen">
+
+    <h1>¿Aceptas mi regalo?</h1>
+
+    <!-- PRIMERA IMAGEN -->
+
+    <img
+      class="gift-image"
+      id="teaser-image"
+      src="https://i.pinimg.com/736x/e5/ce/76/e5ce76de98fc7d024c2a2b6d10bb2c25.jpg"
+      alt="Imagen misteriosa que anticipa el regalo">
+
+    <!-- MENSAJES -->
+
+    <p
+      class="bubble"
+      id="bubble"
+      aria-live="polite"
+      hidden>
+    </p>
+
+    <!-- BOTONES -->
+
+    <div class="buttons">
+
+      <button
+        type="button"
+        class="btn btn-yes"
+        id="btn-yes">
+        Sí
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-no"
+        id="btn-no">
+        No
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= PANTALLA FINAL ================= -->
+
+  <div
+    class="screen reveal"
+    id="reveal-screen"
+    hidden>
+
+    <img
+      class="gift-image"
+      src="https://i.pinimg.com/736x/6f/de/64/6fde641b3ceeda2ac48b54a4c72a8979.jpg"
+      alt="Tu regalo: Hot Wheels"
+      width="600"
+      height="400">
+
+    <p class="final-text">
+      TOMA TUS HOTTTTWEELS
+    </p>
+
+  </div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    (() => {
+
+      'use strict';
+
+
+      /* =========================================
+         CONFIGURACIÓN
+      ========================================= */
+
+      /*
+        La música debe estar en la misma carpeta
+        que este archivo HTML.
+
+        Nombre del archivo:
+
+        pretty-boy.mp3
+      */
+
+      const MUSIC_URL = 'pretty-boy.mp3';
+
+
+      /*
+        Cada vez que se presiona "NO",
+        aparece una nueva imagen y un nuevo mensaje.
+      */
+
+      const steps = [
+
+        /* 2DA IMAGEN */
+
+        {
+          text: 'apura di que si',
+
+          img:
+            'https://i.pinimg.com/736x/a2/27/4d/a2274d2fdd600edaf98edc5239011223.jpg',
+
+          alt: 'Apura di que sí'
+        },
+
+
+        /* 3RA IMAGEN */
+
+        {
+          text: 'no me caes, sapo',
+
+          img:
+            'https://i.pinimg.com/736x/96/47/ba/9647ba30da8fb9b7d7b6ad7b312b4a4c.jpg',
+
+          alt: 'No me caes, sapo'
+        },
+
+
+        /* 4TA IMAGEN */
+
+        {
+          text: 'es bromi, pero me salió bonito si o no?',
+
+          img:
+            'https://i.pinimg.com/736x/d3/fd/fe/d3fdfece68689c7133dc708b34de2547.jpg',
+
+          alt: 'Es bromi, pero me salió bonito si o no'
+        },
+
+
+        /* 5TA IMAGEN */
+
+        {
+          text: 'ji, esta cute poner imagenes de gatos, peor sigue dandole no xd',
+
+          img:
+            'https://i.pinimg.com/736x/87/97/8c/87978ce7f14835b20c2db3aed9536d0a.jpg',
+
+          alt: 'Gato cute'
+        },
+
+
+        /* 6TA IMAGEN */
+
+        {
+          text: 'xd, cuteee',
+
+          img:
+            'https://i.pinimg.com/736x/70/74/26/707426d8d92d6e85da4becb35f921098.jpg',
+
+          alt: 'Gato cute'
+        },
+
+
+        /* 7MA IMAGEN - GIF */
+
+        {
+          text: 'pude poner un giiif, beshito. ahora si',
+
+          img:
+            'cat-kiss-kiss-cat.gif',
+
+          alt: 'GIF de gatitos dándose un besito'
+        },
+
+
+        /* 8VA IMAGEN */
+
+        {
+          text: 'oño',
+
+          img:
+            'https://i.pinimg.com/736x/79/1b/3a/791b3a33b2ce3320ca1817310ad9ae58.jpg',
+
+          alt: 'Oño'
+        },
+
+
+        /* ÚLTIMA IMAGEN ANTES DE DECIR SÍ */
+
+        {
+          text: 'AHORA SIII',
+
+          img:
+            'https://i.pinimg.com/1200x/89/aa/84/89aa84eb63e910169c6443bd15c3724b.jpg',
+
+          alt: 'Ahora sí'
+        }
+
+      ];
+
+
+      /* =========================================
+         ELEMENTOS HTML
+      ========================================= */
+
+      const teaserScreen =
+        document.getElementById('teaser-screen');
+
+      const revealScreen =
+        document.getElementById('reveal-screen');
+
+      const teaserImage =
+        document.getElementById('teaser-image');
+
+      const bubble =
+        document.getElementById('bubble');
+
+      const yesButton =
+        document.getElementById('btn-yes');
+
+      const noButton =
+        document.getElementById('btn-no');
+
+      const music =
+        document.getElementById('bg-music');
+
+      const musicToggle =
+        document.getElementById('music-toggle');
+
+
+      let noClicks = 0;
+
+
+      /* =========================================
+         BOTÓN NO
+      ========================================= */
+
+      noButton.addEventListener('click', () => {
+
+        const step = steps[noClicks];
+
+        noClicks += 1;
+
+
+        /*
+          Mostrar mensaje
+        */
+
+        bubble.hidden = false;
+
+        bubble.textContent = step.text;
+
+
+        /*
+          Cambiar imagen
+        */
+
+        teaserImage.src = step.img;
+
+        teaserImage.alt = step.alt;
+
+
+        /*
+          Reiniciar animación de la imagen
+        */
+
+        teaserImage.classList.remove('bump');
+
+        void teaserImage.offsetWidth;
+
+        teaserImage.classList.add('bump');
+
+
+        /*
+          El botón Sí crece
+        */
+
+        yesButton.style.fontSize =
+          (1.2 + noClicks * 0.35) + 'rem';
+
+
+        /*
+          El botón No se hace pequeño
+        */
+
+        noButton.style.transform =
+          'scale(' +
+          Math.max(0.6, 1 - noClicks * 0.08) +
+          ')';
+
+
+        /*
+          Cuando llegamos a la última imagen:
+
+          - desaparece NO
+          - queda solamente SÍ
+          - aparece "AHORA SIII"
+        */
+
+        if (noClicks >= steps.length) {
+
+          noButton.hidden = true;
+
+          yesButton.focus();
+
+        }
+
+      });
+
+
+      /* =========================================
+         BOTÓN SÍ
+      ========================================= */
+
+      yesButton.addEventListener('click', () => {
+
+        /*
+          Ocultar pantalla de preguntas
+        */
+
+        teaserScreen.hidden = true;
+
+
+        /*
+          Mostrar regalo final
+        */
+
+        revealScreen.hidden = false;
+
+
+        /*
+          Lanzar confeti
+        */
+
+        launchConfetti();
+
+      });
+
+
+      /* =========================================
+         CONFETI
+      ========================================= */
+
+      function launchConfetti() {
+
+        const pieces = [
+          '🎉',
+          '✨',
+          '🎁',
+          '💛',
+          '🎊'
+        ];
+
+
+        for (let i = 0; i < 40; i++) {
+
+          const el =
+            document.createElement('span');
+
+          el.className = 'confetti';
+
+          el.textContent =
+            pieces[i % pieces.length];
+
+
+          el.style.left =
+            Math.random() * 100 + 'vw';
+
+
+          el.style.animationDuration =
+            (2.5 + Math.random() * 2.5) + 's';
+
+
+          el.style.animationDelay =
+            Math.random() * 1.2 + 's';
+
+
+          document.body.appendChild(el);
+
+
+          el.addEventListener(
+            'animationend',
+            () => el.remove()
+          );
+
+        }
+
+      }
+
+
+      /* =========================================
+         MÚSICA
+      ========================================= */
+
+      if (MUSIC_URL) {
+
+        music.src = MUSIC_URL;
+
+        musicToggle.hidden = false;
+
+        let playing = false;
+
+
+        function setState(on) {
+
+          playing = on;
+
+          musicToggle.textContent =
+            on ? '❚❚' : '▶';
+
+          musicToggle.setAttribute(
+            'aria-label',
+            on
+              ? 'Pausar música'
+              : 'Activar música'
+          );
+
+        }
+
+
+        function start() {
+
+          music
+            .play()
+            .then(() => {
+
+              setState(true);
+
+            })
+            .catch(() => {
+
+              /*
+                El navegador puede bloquear
+                la reproducción automática.
+                Se iniciará cuando el usuario
+                haga clic.
+              */
+
+            });
+
+        }
+
+
+        /*
+          La música empieza cuando el usuario
+          hace su primera interacción.
+        */
+
+        document.addEventListener(
+          'pointerdown',
+          (e) => {
+
+            if (
+              !playing &&
+              !musicToggle.contains(e.target)
+            ) {
+
+              start();
+
+            }
+
+          },
+          { once: true }
+        );
+
+
+        /*
+          Botón de música
+        */
+
+        musicToggle.addEventListener(
+          'click',
+          () => {
+
+            if (playing) {
+
+              music.pause();
+
+              setState(false);
+
+            } else {
+
+              start();
+
+            }
+
+          }
+        );
+
+      }
+
+    })();
+
+  </script>
+
+</body>
+</html>
